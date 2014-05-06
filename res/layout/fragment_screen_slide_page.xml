@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/image" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:contentDescription="@string/image" -->
+    <!-- android:src="@drawable/ic_launcher" /> -->
+
+    <it.feio.android.simplegallery.views.TouchImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/image"
+        android:src="@drawable/ic_launcher" />
+
+</LinearLayout>

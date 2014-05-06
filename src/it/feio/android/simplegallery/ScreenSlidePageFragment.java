@@ -85,27 +85,13 @@ public class ScreenSlidePageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
     	
-        // Inflate the layout containing a title and body text.
-//        ViewGroup rootView = (ViewGroup) inflater
-//                .inflate(R.layout.fragment_screen_slide_page, container, false);
-        
         TouchImageView rootView = new TouchImageView(getActivity());
-//        rootView.setImageResource(R.drawable.ic_launcher);
         Point dimensions = Display.getUsableSize(getActivity());
 		if (Build.VERSION.SDK_INT >= 11) {
 			new ImageLoadTask(getActivity(), rootView, dimensions.x, dimensions.y).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mImagePath);
 		} else {
 			new ImageLoadTask(getActivity(), rootView, dimensions.x, dimensions.y).execute(mImagePath);
 		}
-//        rootView.se
-//        android:id="@+id/image"
-//        android:layout_width="match_parent"
-//        android:layout_height="match_parent"
-//        android:contentDescription="@string/image"
-
-        // Set the title view to show the page number.
-//        ((TextView) rootView.findViewById(android.R.id.text1)).setText(
-//                getString(R.string.title_template_step, mPageNumber + 1));
 
         return rootView;
     }

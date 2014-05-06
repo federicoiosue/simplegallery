@@ -17,6 +17,10 @@
  */
 package it.feio.android.simplegallery.views;
 
+import it.feio.android.simplegallery.models.listeners.OnViewTouchedListener;
+import it.feio.android.simplegallery.models.ui.CoverFlowPageTransformer;
+import it.feio.android.simplegallery.models.ui.DepthPageTransformer;
+import it.feio.android.simplegallery.models.ui.ZoomOutPageTransformer;
 import android.content.Context;
 import android.graphics.PointF;
 import android.support.v4.view.ViewPager;
@@ -27,8 +31,14 @@ import android.view.MotionEvent;
  This class implements method to help <b>TouchImageView</b> fling, draggin and scaling.
  */
 public class GalleryViewPager extends ViewPager {
+
+	public static final int PAGE_TRANSFORMER_DEPTH = 0;
+	public static final int PAGE_TRANSFORMER_ZOOM_OUT = 1;	
+	public static final int PAGE_TRANSFORMER_COVER_FLOW = 2;	
+	
     PointF last;
     public TouchImageView mCurrentView;
+	private OnViewTouchedListener mOnViewTouchedListener;
     public GalleryViewPager(Context context) {
         super(context);
     }
@@ -107,4 +117,34 @@ public class GalleryViewPager extends ViewPager {
 //        }
 //        return false;
 //    }
+    
+    
+    public void setPageTransformer(int presetPageTransformer) {
+    	switch (presetPageTransformer) {
+			case PAGE_TRANSFORMER_DEPTH:
+				super.setPageTransformer(true, new DepthPageTransformer());
+				break;
+			case PAGE_TRANSFORMER_ZOOM_OUT:
+				super.setPageTransformer(false, new ZoomOutPageTransformer());
+				break;	
+			case PAGE_TRANSFORMER_COVER_FLOW:
+				super.setPageTransformer(false, new CoverFlowPageTransformer());
+				break;	
+			default:
+				return;
+		}
+    }
+
+
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		if (mOnViewTouchedListener != null) {
+			mOnViewTouchedListener.onViewTouchOccurred(ev);
+		}
+		return super.onInterceptTouchEvent(ev);
+	}
+
+	public void setOnViewTouchedListener(OnViewTouchedListener mOnViewTouchedListener) {
+		this.mOnViewTouchedListener = mOnViewTouchedListener;
+	}
 }

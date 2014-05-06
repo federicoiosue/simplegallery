@@ -2,12 +2,14 @@ package it.feio.android.simplegallery.test;
 
 import it.feio.android.simplegallery.R;
 import it.feio.android.simplegallery.models.ScreenSlidePagerAdapter;
+import it.feio.android.simplegallery.models.ui.DepthPageTransformer;
+import it.feio.android.simplegallery.models.ui.ZoomOutPageTransformer;
 import it.feio.android.simplegallery.util.SystemUiHider;
+import it.feio.android.simplegallery.views.GalleryViewPager;
 
 import java.util.ArrayList;
 
 import android.annotation.TargetApi;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -56,7 +58,7 @@ public class GalleryActivity extends FragmentActivity {
 	 * The pager widget, which handles animation and allows swiping horizontally
 	 * to access previous and next wizard steps.
 	 */
-	private ViewPager mPager;
+	private GalleryViewPager mPager;
 
 	/**
 	 * The pager adapter, which provides the pages to the view pager widget.
@@ -71,7 +73,7 @@ public class GalleryActivity extends FragmentActivity {
 
 		final View controlsView = findViewById(R.id.fullscreen_content_controls);
 		// final View contentView = findViewById(R.id.pager);
-		mPager = (ViewPager) findViewById(R.id.pager);
+		mPager = (GalleryViewPager) findViewById(R.id.pager);
 
 		// Set up an instance of SystemUiHider to control the system UI for
 		// this activity.
@@ -139,9 +141,11 @@ public class GalleryActivity extends FragmentActivity {
 		ArrayList<String> resources = new ArrayList<String>();
 		resources.add("/storage/emulated/0/Android/data/it.feio.android.omninotes/files/20140421_194714_40.png");
 		resources.add("/storage/emulated/0/Android/data/it.feio.android.omninotes/files/20140427_164226_720.jpeg");
+		resources.add("/storage/emulated/0/Android/data/it.feio.android.omninotes/files/20140421_190745_851.jpeg");
 		
 		mPagerAdapter = new ScreenSlidePagerAdapter(this, resources);
 		mPager.setAdapter(mPagerAdapter);
+		mPager.setPageTransformer(GalleryViewPager.PAGE_TRANSFORMER_COVER_FLOW);
 		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {

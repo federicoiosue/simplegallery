@@ -250,7 +250,7 @@ public class BitmapHelper {
 		// Movie mark
 		Bitmap mark = ThumbnailUtils.extractThumbnail(
 				BitmapFactory.decodeResource(mContext.getResources(),
-						R.drawable.play_no_bg), 250, 250);
+						R.drawable.play_no_bg), 100, 100);
 		int x = video.getWidth() / 2 - mark.getWidth() / 2;
 		int y = video.getHeight() / 2 - mark.getHeight() / 2;
 		canvas.drawBitmap(mark, x, y, null);

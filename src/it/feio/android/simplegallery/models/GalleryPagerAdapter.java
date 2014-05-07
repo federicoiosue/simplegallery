@@ -1,5 +1,5 @@
 package it.feio.android.simplegallery.models;
-import it.feio.android.simplegallery.ScreenSlidePageFragment;
+import it.feio.android.simplegallery.GalleryPagerFragment;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  * A simple pager adapter that represents 5 {@link ScreenSlidePageFragment}
  * objects, in sequence.
  */
-public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+public class GalleryPagerAdapter extends FragmentStatePagerAdapter {
 	
 	private List<String> mResources;
 	private Activity mActivity;
 
-	public ScreenSlidePagerAdapter(FragmentActivity activity, List<String> resources) {
+	public GalleryPagerAdapter(FragmentActivity activity, List<String> resources) {
 		super(activity.getSupportFragmentManager());
         this.mResources = resources;
         this.mActivity = activity;
@@ -26,7 +26,7 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 	@Override
 	public Fragment getItem(int position) {
 		try {
-			return ScreenSlidePageFragment.create(position, mResources.get(position));
+			return GalleryPagerFragment.create(position, mResources.get(position));
 		} catch (Exception e) {
 			return null;
 		}

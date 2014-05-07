@@ -20,6 +20,7 @@ package it.feio.android.simplegallery.views;
 import it.feio.android.simplegallery.models.listeners.OnViewTouchedListener;
 import it.feio.android.simplegallery.models.ui.CoverFlowPageTransformer;
 import it.feio.android.simplegallery.models.ui.DepthPageTransformer;
+import it.feio.android.simplegallery.models.ui.RotationPageTransformer;
 import it.feio.android.simplegallery.models.ui.ZoomOutPageTransformer;
 import android.content.Context;
 import android.graphics.PointF;
@@ -35,6 +36,9 @@ public class GalleryViewPager extends ViewPager {
 	public static final int PAGE_TRANSFORMER_DEPTH = 0;
 	public static final int PAGE_TRANSFORMER_ZOOM_OUT = 1;	
 	public static final int PAGE_TRANSFORMER_COVER_FLOW = 2;	
+	public static final int PAGE_TRANSFORMER_ROTATION = 3;	
+
+	private static final int PAGE_TRANSFORMER_ROTATION_ANGLE = 160;	
 	
     PointF last;
     public TouchImageView mCurrentView;
@@ -129,6 +133,9 @@ public class GalleryViewPager extends ViewPager {
 				break;	
 			case PAGE_TRANSFORMER_COVER_FLOW:
 				super.setPageTransformer(false, new CoverFlowPageTransformer());
+				break;
+			case PAGE_TRANSFORMER_ROTATION:
+				super.setPageTransformer(false, new RotationPageTransformer(PAGE_TRANSFORMER_ROTATION_ANGLE));
 				break;	
 			default:
 				return;
@@ -144,6 +151,11 @@ public class GalleryViewPager extends ViewPager {
 		return super.onInterceptTouchEvent(ev);
 	}
 
+	
+	/**
+	 * Gets and throws to parent touch events on the ViewPager
+	 * @param mOnViewTouchedListener
+	 */
 	public void setOnViewTouchedListener(OnViewTouchedListener mOnViewTouchedListener) {
 		this.mOnViewTouchedListener = mOnViewTouchedListener;
 	}

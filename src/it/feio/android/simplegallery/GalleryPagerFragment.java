@@ -37,7 +37,7 @@ import android.widget.TextView;
  * <p>This class is used by the {@link CardFlipActivity} and {@link
  * ScreenSlideActivity} samples.</p>
  */
-public class ScreenSlidePageFragment extends Fragment {
+public class GalleryPagerFragment extends Fragment {
     /**
      * The argument key for the page number this fragment represents.
      */
@@ -61,8 +61,8 @@ public class ScreenSlidePageFragment extends Fragment {
      * Factory method for this fragment class. Constructs a new fragment for the given page number.
      * @param imagePath 
      */
-    public static ScreenSlidePageFragment create(int pageNumber, String imagePath) {
-        ScreenSlidePageFragment fragment = new ScreenSlidePageFragment();
+    public static GalleryPagerFragment create(int pageNumber, String imagePath) {
+    	GalleryPagerFragment fragment = new GalleryPagerFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, pageNumber);
         args.putString(ARG_PATH, imagePath);
@@ -70,7 +70,7 @@ public class ScreenSlidePageFragment extends Fragment {
         return fragment;
     }
 
-    public ScreenSlidePageFragment() {
+    public GalleryPagerFragment() {
     }
 
     @Override

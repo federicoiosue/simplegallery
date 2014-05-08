@@ -94,6 +94,11 @@ public class BitmapHelper {
 			while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
 				inSampleSize *= 2;
 			}
+			
+			if ( ((halfHeight / inSampleSize) > reqHeight || (halfWidth / inSampleSize) > reqWidth)	
+				&& (halfWidth/halfHeight > 2 || halfHeight/halfWidth > 2) ){
+				inSampleSize *= 2;
+			}
 		}
 		return inSampleSize;
 	}

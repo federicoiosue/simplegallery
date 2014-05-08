@@ -68,6 +68,7 @@ public class TouchImageView extends ImageView {
 
     private float minScale;
     private float maxScale;
+    private float dTapMaxScale;    
     private float superMinScale;
     private float superMaxScale;
     private float[] m;
@@ -126,7 +127,8 @@ public class TouchImageView extends ImageView {
         	mScaleType = ScaleType.FIT_CENTER;
         }
         minScale = 1;
-        maxScale = 3;
+        maxScale = 6;
+        dTapMaxScale = 3;
         superMinScale = SUPER_MIN_MULTIPLIER * minScale;
         superMaxScale = SUPER_MAX_MULTIPLIER * maxScale;
         setImageMatrix(matrix);
@@ -787,7 +789,7 @@ public class TouchImageView extends ImageView {
             	consumed = doubleTapListener.onDoubleTap(e);
             }
         	if (state == State.NONE) {
-	        	float targetZoom = (normalizedScale == minScale) ? maxScale : minScale;
+	        	float targetZoom = (normalizedScale == minScale) ? dTapMaxScale : minScale;
 	        	DoubleTapZoom doubleTap = new DoubleTapZoom(targetZoom, e.getX(), e.getY(), false);
 	        	compatPostOnAnimation(doubleTap);
 	        	consumed = true;

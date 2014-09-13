@@ -70,11 +70,6 @@ public class BitmapHelper {
 	
 	/**
 	 * Decoding with inJustDecodeBounds=true to check sampling index without breaking memory
-	 * @param mContext
-	 * @param uri
-	 * @param reqWidth
-	 * @param reqHeight
-	 * @return
 	 * @throws FileNotFoundException
 	 */
 	private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
@@ -117,11 +112,6 @@ public class BitmapHelper {
 	
 	/**
 	 * Creates a thumbnail of requested size by doing a first sampled decoding of the bitmap to optimize memory
-	 * @param ctx
-	 * @param uri
-	 * @param reqWidth
-	 * @param reqHeight
-	 * @return
 	 * @throws FileNotFoundException
 	 */
 	public static Bitmap getThumbnail(Context mContext, Uri uri, int reqWidth, int reqHeight) {
@@ -161,9 +151,6 @@ public class BitmapHelper {
 	
 	/**
 	 * Scales a bitmap to fit required ratio
-	 * @param bmp Image to be scaled
-	 * @param reqWidth
-	 * @param reqHeight
 	 */
 	@SuppressWarnings("unused")
 	private static Bitmap scaleImage(Context mContext, Bitmap bitmap, int reqWidth, int reqHeight) {
@@ -242,10 +229,6 @@ public class BitmapHelper {
 	
 	/**
 	 * Draws a watermark on ImageView to highlight videos
-	 * 
-	 * @param bmp
-	 * @param overlay
-	 * @return
 	 */
 	public static Bitmap createVideoThumbnail(Context mContext, Bitmap video, int width, int height) {
 		video = ThumbnailUtils.extractThumbnail(video, width, height);

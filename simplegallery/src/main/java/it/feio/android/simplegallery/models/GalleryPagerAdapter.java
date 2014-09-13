@@ -8,10 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-/**
- * A simple pager adapter that represents 5 {@link ScreenSlidePageFragment}
- * objects, in sequence.
- */
 public class GalleryPagerAdapter extends FragmentStatePagerAdapter {
 	
 	private List<String> mResources;

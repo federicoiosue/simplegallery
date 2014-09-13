@@ -29,13 +29,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A fragment representing a single step in a wizard. The fragment shows a dummy title indicating
- * the page number, along with some dummy text.
- *
- * <p>This class is used by the {@link CardFlipActivity} and {@link
- * ScreenSlideActivity} samples.</p>
- */
 public class GalleryPagerFragment extends Fragment {
     /**
      * The argument key for the page number this fragment represents.

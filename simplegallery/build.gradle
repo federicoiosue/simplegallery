@@ -8,6 +8,8 @@ android {
         applicationId "it.feio.android.simplegallery"
         minSdkVersion 8
         targetSdkVersion 19
+        versionName project.VERSION_NAME
+        versionCode Integer.parseInt(project.VERSION_CODE)
     }
 
     buildTypes {
@@ -23,8 +25,8 @@ dependencies {
 }
 
 apply plugin: 'maven'
-group 'it.feio.android'
-version '1.0'
+group GROUP
+version VERSION_NAME
 def archives = uploadArchives {
     repositories {
         mavenDeployer {

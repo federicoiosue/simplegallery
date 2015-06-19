@@ -313,16 +313,14 @@ public class BitmapUtils {
 	 */
 	public static Bitmap createVideoThumbnail(Context mContext, Bitmap video, int width, int height) {
 		video = ThumbnailUtils.extractThumbnail(video, width, height);
-		
-		Bitmap thumbnail = Bitmap.createBitmap(width, height,
-				Bitmap.Config.ARGB_8888);
+		Bitmap thumbnail = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(thumbnail);
 		canvas.drawBitmap(video, 0, 0, null);
 		
 		// Movie mark
-		Bitmap mark = ThumbnailUtils.extractThumbnail(
-				BitmapFactory.decodeResource(mContext.getResources(),
-						R.drawable.play_no_bg), 200, 200);
+		int markSize = calculateVideoMarkSize(width, height);
+		Bitmap mark = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(mContext.getResources(),
+						R.drawable.play_no_bg), markSize, markSize);
 		int x = video.getWidth() / 2 - mark.getWidth() / 2;
 		int y = video.getHeight() / 2 - mark.getHeight() / 2;
 		canvas.drawBitmap(mark, x, y, null);
@@ -331,8 +329,13 @@ public class BitmapUtils {
 	}
 
 
-
-
+	private static int calculateVideoMarkSize(int width, int height) {
+		int referredSize = Math.min(width, height);
+		int result = referredSize / 9;
+		if (result < 30) result = 30;
+		if (result > 200) result = 200;
+		return result;
+	}
 
 
 	private static int dpToPx(Context mContext, int dp) {

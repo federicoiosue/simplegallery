@@ -1,6 +1,6 @@
 package it.feio.android.simplegallery.async;
 
-import it.feio.android.simplegallery.util.BitmapHelper;
+import it.feio.android.simplegallery.util.BitmapUtils;
 
 import java.io.File;
 
@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
 
 public class ImageLoadTask extends AsyncTask<String, Integer, Bitmap> {
 
@@ -28,7 +29,7 @@ public class ImageLoadTask extends AsyncTask<String, Integer, Bitmap> {
 	@Override
 	protected Bitmap doInBackground(String... strings) {
 		String path = strings[0];
-		Bitmap bm = BitmapHelper.getThumbnail(mContext, Uri.fromFile(new File(path)),
+		Bitmap bm = BitmapUtils.getThumbnail(mContext, Uri.fromFile(new File(path)),
 				width, height);
 		return bm;
 	}

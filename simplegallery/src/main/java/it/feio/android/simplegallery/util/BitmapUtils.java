@@ -15,19 +15,15 @@
  ******************************************************************************/
 package it.feio.android.simplegallery.util;
 
+import android.content.res.Resources;
+import android.graphics.*;
+import android.provider.SyncStateContract;
 import it.feio.android.simplegallery.R;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -36,7 +32,7 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 
-public class BitmapHelper {
+public class BitmapUtils {
 
 	/**
 	 * Decodifica ottimizzata per la memoria dei bitmap
@@ -50,29 +46,42 @@ public class BitmapHelper {
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	public static Bitmap decodeSampledFromUri(Context mContext, Uri uri, int reqWidth, int reqHeight)
-			throws FileNotFoundException {
+	public static Bitmap decodeSampledFromUri(Context mContext, Uri uri, int reqWidth, int reqHeight) {
 
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(uri), null, options);
+		InputStream inputStream = null;
+		InputStream inputStreamSampled = null;
+		try {
+			inputStream = mContext.getContentResolver().openInputStream(uri);
+			BitmapFactory.decodeStream(inputStream, null, options);
 
-		// Setting decode options
-		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-		options.inJustDecodeBounds = false;
+			// Setting decode options
+			options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+			options.inJustDecodeBounds = false;
 
-		// Bitmap is now decoded for real using calculated inSampleSize
-		Bitmap bmp = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(uri), null, options);
-		return bmp;
+			// Bitmap is now decoded for real using calculated inSampleSize
+			inputStreamSampled = mContext.getContentResolver().openInputStream(uri);
+			return BitmapFactory.decodeStream(inputStreamSampled, null, options);
+		} catch (IOException e) {
+			Log.e("BitmapUtils", "Error");
+			return BitmapFactory.decodeResource(mContext.getResources(), R.drawable.image_broken);
+		} finally {
+			try {
+				inputStream.close();
+				inputStreamSampled.close();
+			} catch (IOException e) {
+				Log.e("BitmapUtils", "Failed to close streams");
+			}
+		}
 	}
-	
-	
-	
+
+
 	/**
 	 * Decoding with inJustDecodeBounds=true to check sampling index without breaking memory
 	 * @throws FileNotFoundException
 	 */
-	private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
 			throws FileNotFoundException {
 
 		// Calcolo dell'inSampleSize e delle nuove dimensioni proporzionate
@@ -100,7 +109,84 @@ public class BitmapHelper {
 		}
 		return inSampleSize;
 	}
-	
+
+
+	/**
+	 * Draws text on a bitmap
+	 */
+	public static Bitmap drawTextToBitmap(Context mContext, Bitmap bitmap,
+										  String text, Integer offsetX, Integer offsetY, float textSize,
+										  Integer textColor) {
+		Resources resources = mContext.getResources();
+		float scale = resources.getDisplayMetrics().density;
+		// Bitmap bitmap =
+		// BitmapFactory.decodeResource(resources, gResId);
+
+		android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
+		// set default bitmap config if none
+		if (bitmapConfig == null) {
+			bitmapConfig = android.graphics.Bitmap.Config.RGB_565;
+		}
+		// if bitmap is not mutable a copy is done
+		if (!bitmap.isMutable())
+			bitmap = bitmap.copy(bitmapConfig, true);
+
+		Canvas canvas = new Canvas(bitmap);
+		// new antialised Paint
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		// text color - #3D3D3D
+		paint.setColor(textColor);
+		// text size in pixels is converted as follows:
+		// 1. multiplied for scale to obtain size in dp
+		// 2. multiplied for bitmap size to maintain proportionality
+		// 3. divided for a constant (300) to assimilate input size with android text sizes
+		textSize = (int) (textSize * scale * bitmap.getWidth() / 100);
+		// If is too big it will be limited
+		textSize = textSize < 15 ? textSize : 15;
+		paint.setTextSize(textSize);
+		// text shadow
+		paint.setShadowLayer(1f, 0f, 1f, Color.WHITE);
+
+		// Preparing text paint bounds
+		Rect bounds = new Rect();
+		paint.getTextBounds(text, 0, text.length(), bounds);
+
+		// Calculating position
+		int x, y;
+		// If no offset are set default is center of bitmap
+		if (offsetX == null) {
+			x = (bitmap.getWidth() - bounds.width()) / 2;
+		} else {
+			// If is a positive offset is set position is calculated
+			// starting from left limit of bitmap
+			if (offsetX >= 0) {
+				x = offsetX;
+				// Otherwise if negative offset is set position is calculated
+				// starting from right limit of bitmap
+			} else {
+				x = bitmap.getWidth() - bounds.width() - offsetX;
+			}
+		}
+		// If no offset are set default is center of bitmap
+		if (offsetY == null) {
+			y = (bitmap.getHeight() - bounds.height()) / 2;
+		} else {
+			// If is a positive offset is set position is calculated
+			// starting from top limit of bitmap
+			if (offsetY >= 0) {
+				y = offsetY;
+				// Otherwise if negative offset is set position is calculated
+				// starting from bottom limit of bitmap
+			} else {
+				y = bitmap.getHeight() - bounds.height() + offsetY;
+			}
+		}
+
+		// Drawing text
+		canvas.drawText(text, x, y, paint);
+
+		return bitmap;
+	}
 	
 	
 	public static Uri getUri(Context mContext, int resource_id) {
@@ -130,11 +216,7 @@ public class BitmapHelper {
 		}
 			
 		if (type == TYPE_IMAGE) {
-			try {
-				dstBmp = decodeSampledFromUri(mContext, uri, reqWidth, reqHeight);
-			} catch (FileNotFoundException e) {
-				Log.e("AndroidTouchGallery", "Missing attachment file: " + uri.getPath());
-			}
+			dstBmp = decodeSampledFromUri(mContext, uri, reqWidth, reqHeight);
 		}
 		
 		else if (type == TYPE_VIDEO) {
@@ -142,13 +224,12 @@ public class BitmapHelper {
 			dstBmp = createVideoThumbnail(mContext, srcBmp, reqWidth, reqHeight);
 		}
 		
-		srcBmp = null;
 		return dstBmp;
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Scales a bitmap to fit required ratio
 	 */
@@ -179,8 +260,8 @@ public class BitmapHelper {
 		return scaledBitmap;
 	}
 	
-	
-	
+
+
 	/**
 	 * To avoid problems with rotated videos retrieved from camera
 	 * @param bitmap
@@ -211,22 +292,22 @@ public class BitmapHelper {
 		}
 		return resultBitmap;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	public static InputStream getBitmapInputStream(Bitmap bitmap) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
-		bitmap.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos); 
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		bitmap.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
 		byte[] bitmapdata = bos.toByteArray();
 		ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
 		return bs;
 	}
-	
-	
 
-	
+
+
+
 	/**
 	 * Draws a watermark on ImageView to highlight videos
 	 */
@@ -248,19 +329,19 @@ public class BitmapHelper {
 
 		return thumbnail;
 	}
-	
-	
 
-	
-	
-	
+
+
+
+
+
 	private static int dpToPx(Context mContext, int dp) {
 		float density = mContext.getResources().getDisplayMetrics().density;
 		return Math.round((float) dp * density);
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }

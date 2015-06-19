@@ -76,7 +76,7 @@ public class GalleryPagerFragment extends Fragment {
     @SuppressLint("NewApi")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-    	
+
         TouchImageView rootView = new TouchImageView(getActivity());
         Point dimensions = Display.getUsableSize(getActivity());
 		if (Build.VERSION.SDK_INT >= 11) {

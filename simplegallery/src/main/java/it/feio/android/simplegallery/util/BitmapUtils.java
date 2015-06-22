@@ -70,7 +70,7 @@ public class BitmapUtils {
 			try {
 				inputStream.close();
 				inputStreamSampled.close();
-			} catch (IOException e) {
+			} catch (IOException | NullPointerException e) {
 				Log.e("BitmapUtils", "Failed to close streams");
 			}
 		}

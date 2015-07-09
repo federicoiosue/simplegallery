@@ -221,6 +221,9 @@ public class BitmapUtils {
 		
 		else if (type == TYPE_VIDEO) {
 			srcBmp = ThumbnailUtils.createVideoThumbnail(uri.getPath(), MediaStore.Video.Thumbnails.MINI_KIND);
+			if (srcBmp == null) {
+				srcBmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.image_broken);
+			}
 			dstBmp = createVideoThumbnail(mContext, srcBmp, reqWidth, reqHeight);
 		}
 		

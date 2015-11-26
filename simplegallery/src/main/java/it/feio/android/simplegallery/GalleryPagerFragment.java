@@ -16,18 +16,14 @@
 
 package it.feio.android.simplegallery;
 
-import it.feio.android.simplegallery.async.ImageLoadTask;
-import it.feio.android.simplegallery.util.Display;
-import it.feio.android.simplegallery.views.TouchImageView;
 import android.annotation.SuppressLint;
-import android.graphics.Point;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.bumptech.glide.Glide;
+import it.feio.android.simplegallery.views.TouchImageView;
 
 public class GalleryPagerFragment extends Fragment {
     /**
@@ -78,12 +74,11 @@ public class GalleryPagerFragment extends Fragment {
             Bundle savedInstanceState) {
 
         TouchImageView rootView = new TouchImageView(getActivity());
-        Point dimensions = Display.getUsableSize(getActivity());
-		if (Build.VERSION.SDK_INT >= 11) {
-			new ImageLoadTask(getActivity(), rootView, dimensions.x, dimensions.y).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mImagePath);
-		} else {
-			new ImageLoadTask(getActivity(), rootView, dimensions.x, dimensions.y).execute(mImagePath);
-		}
+		Glide.with(getActivity())
+				.load(mImagePath)
+				.centerCrop()
+				.crossFade()
+				.into(rootView);
 
         return rootView;
     }

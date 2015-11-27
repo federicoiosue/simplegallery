@@ -16,14 +16,20 @@
 
 package it.feio.android.simplegallery;
 
+import android.app.ActionBar;
+import com.bumptech.glide.Glide;
+import it.feio.android.simplegallery.async.ImageLoadTask;
+import it.feio.android.simplegallery.util.Display;
+import it.feio.android.simplegallery.views.TouchImageView;
 import android.annotation.SuppressLint;
+import android.graphics.Point;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.bumptech.glide.Glide;
-import it.feio.android.simplegallery.views.TouchImageView;
 
 public class GalleryPagerFragment extends Fragment {
     /**
@@ -47,7 +53,7 @@ public class GalleryPagerFragment extends Fragment {
 
     /**
      * Factory method for this fragment class. Constructs a new fragment for the given page number.
-     * @param imagePath 
+     * @param imagePath
      */
     public static GalleryPagerFragment create(int pageNumber, String imagePath) {
     	GalleryPagerFragment fragment = new GalleryPagerFragment();
@@ -74,10 +80,19 @@ public class GalleryPagerFragment extends Fragment {
             Bundle savedInstanceState) {
 
         TouchImageView rootView = new TouchImageView(getActivity());
+		rootView.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup
+				.LayoutParams.MATCH_PARENT));
+//        Point dimensions = Display.getUsableSize(getActivity());
+//		if (Build.VERSION.SDK_INT >= 11) {
+//			new ImageLoadTask(getActivity(), rootView, dimensions.x, dimensions.y).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mImagePath);
+//		} else {
+//			new ImageLoadTask(getActivity(), rootView, dimensions.x, dimensions.y).execute(mImagePath);
+//		}
 		Glide.with(getActivity())
 				.load(mImagePath)
 				.centerCrop()
 				.crossFade()
+				.error(R.drawable.image_broken)
 				.into(rootView);
 
         return rootView;

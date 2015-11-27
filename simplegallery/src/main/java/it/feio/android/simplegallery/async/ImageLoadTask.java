@@ -45,7 +45,7 @@ public class ImageLoadTask extends AsyncTask<String, Integer, Bitmap> {
 			mImageView.setScaleType(ScaleType.MATRIX);
 			mImageView.setImageBitmap(bitmap);
 		}
-		mImageView.setVisibility(View.VISIBLE);
+//		mImageView.setVisibility(View.VISIBLE);
 //		mProgressBar.setVisibility(GONE);
 	}
 

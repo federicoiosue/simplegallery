@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2014 Federico Iosue (federico.iosue@gmail.com)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -75,6 +75,41 @@ public class BitmapUtils {
 	}
 
 
+	public static Bitmap getFullImage(Context mContext, Uri uri, int reqWidth, int reqHeight) {
+		final int TYPE_IMAGE = 0;
+		final int TYPE_VIDEO = 1;
+
+		Bitmap dstBmp = null;
+
+		int type = TYPE_IMAGE;
+		String extension = MimeTypeMap.getFileExtensionFromUrl(uri.getPath());
+		if (extension != null) {
+			MimeTypeMap mime = MimeTypeMap.getSingleton();
+			if (mime.getMimeTypeFromExtension(extension).contains("video/")) type = TYPE_VIDEO;
+		}
+
+		if (type == TYPE_IMAGE) {
+			dstBmp = decodeSampledFromUri(mContext, uri, reqWidth, reqHeight);
+
+			int rotation = neededRotation(new File(uri.getPath()));
+			if (rotation != 0) {
+				Matrix matrix = new Matrix();
+				matrix.postRotate(rotation);
+				dstBmp = Bitmap.createBitmap(dstBmp, 0, 0, dstBmp.getWidth(), dstBmp.getHeight(), matrix, true);
+			}
+		}
+
+		else if (type == TYPE_VIDEO) {
+			Bitmap srcBmp = ThumbnailUtils.createVideoThumbnail(uri.getPath(), MediaStore.Video.Thumbnails.MINI_KIND);
+			if (srcBmp == null) {
+				srcBmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.image_broken);
+			}
+			dstBmp = createVideoThumbnail(mContext, srcBmp, reqWidth, reqHeight);
+		}
+		return dstBmp;
+	}
+
+
 	/**
 	 * Checks using EXIF data image's orientation
 	 */
@@ -104,7 +139,7 @@ public class BitmapUtils {
 
 	/**
 	 * Decodifica ottimizzata per la memoria dei bitmap
-	 * 
+	 *
 	 * @param uri
 	 *            URI bitmap
 	 * @param reqWidth
@@ -206,11 +241,11 @@ public class BitmapUtils {
 			while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
 				inSampleSize *= 2;
 			}
-			
-//			if ( ((halfHeight / inSampleSize) > reqHeight || (halfWidth / inSampleSize) > reqWidth)	
+
+//			if ( ((halfHeight / inSampleSize) > reqHeight || (halfWidth / inSampleSize) > reqWidth)
 //				&& (halfWidth/halfHeight > 4 || halfHeight/halfWidth > 4) ){
 //				inSampleSize *= 2;
-//			}			
+//			}
 			while ( (halfHeight / inSampleSize) > reqHeight * 2 || (halfWidth / inSampleSize) > reqWidth * 2) {
 				inSampleSize *= 2;
 			}
@@ -295,15 +330,15 @@ public class BitmapUtils {
 
 		return bitmap;
 	}
-	
-	
+
+
 	public static Uri getUri(Context mContext, int resource_id) {
 		Uri uri = Uri.parse("android.resource://" + mContext.getPackageName() + "/" + resource_id);
 		return uri;
 	}
-	
-	
-	
+
+
+
 
 
 
@@ -338,7 +373,7 @@ public class BitmapUtils {
 
 		return scaledBitmap;
 	}
-	
+
 
 
 	/**
@@ -390,7 +425,7 @@ public class BitmapUtils {
 		Bitmap thumbnail = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(thumbnail);
 		canvas.drawBitmap(video, 0, 0, null);
-		
+
 		// Movie mark
 		int markSize = calculateVideoMarkSize(width, height);
 		Bitmap mark = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeResource(mContext.getResources(),

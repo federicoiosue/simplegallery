@@ -22,9 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"
-        tools:context="it.feio.android.omninotes.GalleryActivity">
+        tools:context="it.feio.android.demo.GalleryActivity">
 
-    <it.feio.android.simplegallery.views.GalleryViewPager
+    <it.feio.android.demo.views.GalleryViewPager
             android:id="@+id/fullscreen_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -1,6 +1,6 @@
-package it.feio.android.demo.models;
+package it.feio.android.simplegallery.models;
 import android.net.Uri;
-import it.feio.android.demo.GalleryPagerFragment;
+import it.feio.android.simplegallery.GalleryPagerFragment;
 
 import java.util.List;
 

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package it.feio.android.demo;
+package it.feio.android.simplegallery;
 
 import android.app.ActionBar;
 import android.net.Uri;
 import com.bumptech.glide.Glide;
-import it.feio.android.demo.util.Display;
-import it.feio.android.demo.views.TouchImageView;
+import it.feio.android.simplegallery.util.Display;
+import it.feio.android.simplegallery.views.TouchImageView;
 import android.annotation.SuppressLint;
 import android.graphics.Point;
 import android.os.Bundle;

@@ -15,13 +15,13 @@
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package it.feio.android.demo.views;
+package it.feio.android.simplegallery.views;
 
-import it.feio.android.demo.models.listeners.OnViewTouchedListener;
-import it.feio.android.demo.models.ui.CoverFlowPageTransformer;
-import it.feio.android.demo.models.ui.DepthPageTransformer;
-import it.feio.android.demo.models.ui.RotationPageTransformer;
-import it.feio.android.demo.models.ui.ZoomOutPageTransformer;
+import it.feio.android.simplegallery.models.listeners.OnViewTouchedListener;
+import it.feio.android.simplegallery.models.ui.CoverFlowPageTransformer;
+import it.feio.android.simplegallery.models.ui.DepthPageTransformer;
+import it.feio.android.simplegallery.models.ui.RotationPageTransformer;
+import it.feio.android.simplegallery.models.ui.ZoomOutPageTransformer;
 import android.content.Context;
 import android.graphics.PointF;
 import android.os.Build;

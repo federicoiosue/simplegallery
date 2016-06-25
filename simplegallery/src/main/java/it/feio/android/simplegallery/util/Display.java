@@ -1,4 +1,4 @@
-package it.feio.android.demo.util;
+package it.feio.android.simplegallery.util;
 
 
 import android.annotation.SuppressLint;

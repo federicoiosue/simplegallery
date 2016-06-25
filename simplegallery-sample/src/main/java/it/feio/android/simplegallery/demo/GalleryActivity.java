@@ -8,9 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-import it.feio.android.demo.models.GalleryPagerAdapter;
-import it.feio.android.demo.models.listeners.OnViewTouchedListener;
-import it.feio.android.demo.views.GalleryViewPager;
+import it.feio.android.simplegallery.models.GalleryPagerAdapter;
+import it.feio.android.simplegallery.models.listeners.OnViewTouchedListener;
+import it.feio.android.simplegallery.views.GalleryViewPager;
 
 import java.io.IOException;
 import java.util.ArrayList;

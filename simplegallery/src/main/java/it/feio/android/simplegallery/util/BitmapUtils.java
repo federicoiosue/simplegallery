@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-package it.feio.android.demo.util;
+package it.feio.android.simplegallery.util;
 
 import android.content.res.Resources;
 import android.graphics.*;
 import android.widget.ImageView;
-import it.feio.android.demo.R;
+import it.feio.android.simplegallery.R;
 
 import java.io.*;
 

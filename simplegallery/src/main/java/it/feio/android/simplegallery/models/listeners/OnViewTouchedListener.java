@@ -1,4 +1,4 @@
-package it.feio.android.demo.models.listeners;
+package it.feio.android.simplegallery.models.listeners;
 
 import android.view.MotionEvent;
 

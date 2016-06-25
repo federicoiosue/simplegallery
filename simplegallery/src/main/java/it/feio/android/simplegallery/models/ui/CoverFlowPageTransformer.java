@@ -1,4 +1,4 @@
-package it.feio.android.demo.models.ui;
+package it.feio.android.simplegallery.models.ui;
 
 import android.annotation.TargetApi;
 import android.os.Build;

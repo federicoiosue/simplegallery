@@ -10,7 +10,7 @@
  * Extends Android ImageView to include pinch zooming, panning, fling and double tap zoom.
  */
 
-package it.feio.android.demo.views;
+package it.feio.android.simplegallery.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -1,6 +1,6 @@
-package it.feio.android.demo.async;
+package it.feio.android.simplegallery.async;
 
-import it.feio.android.demo.util.BitmapUtils;
+import it.feio.android.simplegallery.util.BitmapUtils;
 
 import java.io.File;
 

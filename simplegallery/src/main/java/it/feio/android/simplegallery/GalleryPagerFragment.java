@@ -63,9 +63,6 @@ public class GalleryPagerFragment extends Fragment {
         return fragment;
     }
 
-    public GalleryPagerFragment() {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +81,7 @@ public class GalleryPagerFragment extends Fragment {
         Point dimensions = Display.getUsableSize(getActivity());
 		Glide.with(getActivity())
 				.load(mImagePath)
-				.centerCrop()
+				.fitCenter()
 				.crossFade()
 				.override(dimensions.x, dimensions.y)
 				.error(R.drawable.image_broken)

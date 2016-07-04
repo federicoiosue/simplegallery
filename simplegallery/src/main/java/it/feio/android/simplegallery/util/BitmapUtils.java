@@ -17,8 +17,6 @@ package it.feio.android.simplegallery.util;
 
 import android.content.res.Resources;
 import android.graphics.*;
-import android.provider.SyncStateContract;
-import android.text.TextUtils;
 import android.widget.ImageView;
 import it.feio.android.simplegallery.R;
 

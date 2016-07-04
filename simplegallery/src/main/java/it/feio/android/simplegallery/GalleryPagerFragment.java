@@ -16,18 +16,19 @@
 
 package it.feio.android.simplegallery;
 
-import it.feio.android.simplegallery.async.ImageLoadTask;
+import android.app.ActionBar;
+import android.net.Uri;
+import com.bumptech.glide.Glide;
 import it.feio.android.simplegallery.util.Display;
 import it.feio.android.simplegallery.views.TouchImageView;
 import android.annotation.SuppressLint;
 import android.graphics.Point;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 
 public class GalleryPagerFragment extends Fragment {
     /**
@@ -47,29 +48,26 @@ public class GalleryPagerFragment extends Fragment {
     /**
      * The fragment's image path, which is set to the argument value for {@link #ARG_PATH}.
      */
-    private String mImagePath;
+    private Uri mImagePath;
 
     /**
      * Factory method for this fragment class. Constructs a new fragment for the given page number.
-     * @param imagePath 
-     */
-    public static GalleryPagerFragment create(int pageNumber, String imagePath) {
+	 * @param imagePath
+	 */
+    public static GalleryPagerFragment create(int pageNumber, Uri imagePath) {
     	GalleryPagerFragment fragment = new GalleryPagerFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, pageNumber);
-        args.putString(ARG_PATH, imagePath);
+        args.putSerializable(ARG_PATH, imagePath.toString());
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public GalleryPagerFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPageNumber = getArguments().getInt(ARG_PAGE);
-        mImagePath = getArguments().getString(ARG_PATH);
+        mImagePath = Uri.parse(getArguments().getString(ARG_PATH));
     }
 
     @Override
@@ -78,12 +76,16 @@ public class GalleryPagerFragment extends Fragment {
             Bundle savedInstanceState) {
 
         TouchImageView rootView = new TouchImageView(getActivity());
+		rootView.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup
+				.LayoutParams.MATCH_PARENT));
         Point dimensions = Display.getUsableSize(getActivity());
-		if (Build.VERSION.SDK_INT >= 11) {
-			new ImageLoadTask(getActivity(), rootView, dimensions.x, dimensions.y).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mImagePath);
-		} else {
-			new ImageLoadTask(getActivity(), rootView, dimensions.x, dimensions.y).execute(mImagePath);
-		}
+		Glide.with(getActivity())
+				.load(mImagePath)
+				.fitCenter()
+				.crossFade()
+				.override(dimensions.x, dimensions.y)
+				.error(R.drawable.image_broken)
+				.into(rootView);
 
         return rootView;
     }

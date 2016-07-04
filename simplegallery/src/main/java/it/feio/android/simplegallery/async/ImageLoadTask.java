@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
@@ -45,7 +44,7 @@ public class ImageLoadTask extends AsyncTask<String, Integer, Bitmap> {
 			mImageView.setScaleType(ScaleType.MATRIX);
 			mImageView.setImageBitmap(bitmap);
 		}
-		mImageView.setVisibility(View.VISIBLE);
+//		mImageView.setVisibility(View.VISIBLE);
 //		mProgressBar.setVisibility(GONE);
 	}
 

@@ -18,16 +18,18 @@ package it.feio.android.simplegallery;
 
 import android.app.ActionBar;
 import android.net.Uri;
-import com.bumptech.glide.Glide;
-import it.feio.android.simplegallery.util.Display;
-import it.feio.android.simplegallery.views.TouchImageView;
-import android.annotation.SuppressLint;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import it.feio.android.simplegallery.views.TouchImageView;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 
 public class GalleryPagerFragment extends Fragment {
@@ -71,20 +73,21 @@ public class GalleryPagerFragment extends Fragment {
     }
 
     @Override
-    @SuppressLint("NewApi")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
         TouchImageView rootView = new TouchImageView(getActivity());
-		rootView.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup
-				.LayoutParams.MATCH_PARENT));
-        Point dimensions = Display.getUsableSize(getActivity());
-		Glide.with(getActivity())
+		rootView.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+
+        RequestOptions options = new RequestOptions()
+                .fitCenter()
+                .centerCrop()
+                .error(R.drawable.image_broken);
+		Glide.with(this)
 				.load(mImagePath)
-				.fitCenter()
-				.crossFade()
-				.override(dimensions.x, dimensions.y)
-				.error(R.drawable.image_broken)
+                .transition(withCrossFade())
+                .apply(options)
 				.into(rootView);
 
         return rootView;

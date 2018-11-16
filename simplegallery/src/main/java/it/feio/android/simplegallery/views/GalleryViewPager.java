@@ -157,28 +157,26 @@ public class GalleryViewPager extends ViewPager {
 	
 
 	public void setPageTransformer(int presetPageTransformer) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			// setPageMargin(-2 * paddingOnPages);
-			setClipChildren(false);
+		// setPageMargin(-2 * paddingOnPages);
+		setClipChildren(false);
 //			setOffscreenPageLimit(getAdapter().getCount());
-			setOffscreenPageLimit(1);
-			switch (presetPageTransformer) {
-			case PAGE_TRANSFORMER_DEPTH:
-				super.setPageTransformer(true, new DepthPageTransformer());
-				break;
-			case PAGE_TRANSFORMER_ZOOM_OUT:
-				super.setPageTransformer(false, new ZoomOutPageTransformer());
-				break;
-			case PAGE_TRANSFORMER_COVER_FLOW:
-				super.setPageTransformer(false, new CoverFlowPageTransformer());
-				break;
-			case PAGE_TRANSFORMER_ROTATION:
-				super.setPageTransformer(true, new RotationPageTransformer(
-						PAGE_TRANSFORMER_ROTATION_ANGLE));
-				break;
-			default:
-				return;
-			}
+		setOffscreenPageLimit(1);
+		switch (presetPageTransformer) {
+		case PAGE_TRANSFORMER_DEPTH:
+			super.setPageTransformer(true, new DepthPageTransformer());
+			break;
+		case PAGE_TRANSFORMER_ZOOM_OUT:
+			super.setPageTransformer(false, new ZoomOutPageTransformer());
+			break;
+		case PAGE_TRANSFORMER_COVER_FLOW:
+			super.setPageTransformer(false, new CoverFlowPageTransformer());
+			break;
+		case PAGE_TRANSFORMER_ROTATION:
+			super.setPageTransformer(true, new RotationPageTransformer(
+					PAGE_TRANSFORMER_ROTATION_ANGLE));
+			break;
+		default:
+			return;
 		}
 	}
 

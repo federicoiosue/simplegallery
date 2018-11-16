@@ -28,9 +28,8 @@ public class ImageLoadTask extends AsyncTask<String, Integer, Bitmap> {
 	@Override
 	protected Bitmap doInBackground(String... strings) {
 		String path = strings[0];
-		Bitmap bm = BitmapUtils.getFullImage(mContext, Uri.fromFile(new File(path)),
+		return BitmapUtils.getFullImage(mContext, Uri.fromFile(new File(path)),
 				width, height);
-		return bm;
 	}
 
 	@Override

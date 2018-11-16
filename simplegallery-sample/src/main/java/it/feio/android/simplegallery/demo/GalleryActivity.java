@@ -83,21 +83,19 @@ public class GalleryActivity extends AppCompatActivity {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 
-		galleryRootView = (FrameLayout) findViewById(R.id.gallery_root);
+		galleryRootView = findViewById(R.id.gallery_root);
 //		galleryRootView.setOnViewTouchedListener(screenTouches);
 
-		mViewPager = (GalleryViewPager) findViewById(R.id.fullscreen_content);
-		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+		mViewPager = findViewById(R.id.fullscreen_content);
+		mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
 			@Override
 			public void onPageSelected(int arg0) {
 //				getSupportActionBar().setSubtitle("(" + (arg0 + 1) + "/" + images.size() + ")");
 			}
 
-
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
 			}
-
 
 			@Override
 			public void onPageScrollStateChanged(int arg0) {

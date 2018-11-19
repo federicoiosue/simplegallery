@@ -83,6 +83,7 @@ public class GalleryPagerFragment extends Fragment {
         RequestOptions options = new RequestOptions()
                 .fitCenter()
                 .centerCrop()
+                .placeholder(android.R.drawable.gallery_thumb)
                 .error(R.drawable.image_broken);
 		Glide.with(this)
 				.load(mImagePath)

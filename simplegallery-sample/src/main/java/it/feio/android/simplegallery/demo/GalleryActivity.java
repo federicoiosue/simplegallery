@@ -5,17 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
+import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-import it.feio.android.simplegallery.models.GalleryPagerAdapter;
-import it.feio.android.simplegallery.models.listeners.OnViewTouchedListener;
-import it.feio.android.simplegallery.views.GalleryViewPager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import it.feio.android.simplegallery.models.GalleryPagerAdapter;
+import it.feio.android.simplegallery.views.GalleryViewPager;
 
 /**
  * Copyright (C) 2015 Federico Iosue (federico.iosue@gmail.com)
@@ -58,9 +57,12 @@ public class GalleryActivity extends AppCompatActivity {
 	 */
 	private static final boolean TOGGLE_ON_CLICK = true;
 
-	FrameLayout galleryRootView;
-	GalleryViewPager mViewPager;
-	List<Uri> images;
+	private final List<String> IMAGE_NAMES = Arrays.asList("02.png", "03.png", "04.png", "05.png");
+
+	private FrameLayout galleryRootView;
+	private GalleryViewPager mViewPager;
+	private List<Uri> images;
+	private Toolbar mTopToolbar;
 
 
 	@Override
@@ -68,29 +70,28 @@ public class GalleryActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gallery);
 		initViews();
-		try {
-			initData();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        initData();
 	}
 
 
 	private void initViews() {
-		// Show the Up button in the action bar.
+
+		mTopToolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(mTopToolbar);
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().setDisplayShowTitleEnabled(true);
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		}
+            getSupportActionBar().setTitle("SimpleGallery Sample");
+			getSupportActionBar().setSubtitle("(1/" + IMAGE_NAMES.size() + ")");
+        }
 
 		galleryRootView = findViewById(R.id.gallery_root);
-//		galleryRootView.setOnViewTouchedListener(screenTouches);
 
 		mViewPager = findViewById(R.id.fullscreen_content);
 		mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
 			@Override
 			public void onPageSelected(int arg0) {
-//				getSupportActionBar().setSubtitle("(" + (arg0 + 1) + "/" + images.size() + ")");
+				getSupportActionBar().setSubtitle("(" + (arg0 + 1) + "/" + images.size() + ")");
 			}
 
 			@Override
@@ -107,8 +108,7 @@ public class GalleryActivity extends AppCompatActivity {
 	/**
 	 * Initializes data received from note detail screen
 	 */
-	private void initData() throws IOException {
-		String title = getIntent().getStringExtra("Gallery title");
+	private void initData() {
 		int clickedImage = 0;
 
 		GalleryPagerAdapter pagerAdapter =
@@ -120,9 +120,9 @@ public class GalleryActivity extends AppCompatActivity {
 
 
 	@NonNull
-	private List<Uri> getImages() throws IOException {
+	private List<Uri> getImages() {
 		images = new ArrayList<>();
-		for (String imageName : Arrays.asList("02.png", "03.png", "04.png", "05.png")) {
+		for (String imageName : IMAGE_NAMES) {
 			images.add(Uri.parse("file:///android_asset/" + imageName));
 		}
 		return images;
@@ -132,46 +132,5 @@ public class GalleryActivity extends AppCompatActivity {
 	private void viewMedia() {
 		Toast.makeText(this, "Share with external app", Toast.LENGTH_SHORT).show();
 	}
-
-
-//	private void shareMedia() {
-//		Attachment attachment = images.get(mViewPager.getCurrentItem());
-//		Intent intent = new Intent(Intent.ACTION_SEND);
-//		intent.setType(StorageHelper.getMimeType(this, attachment.getUri()));
-//		intent.putExtra(Intent.EXTRA_STREAM, attachment.getUri());
-//		startActivity(intent);
-//	}
-
-
-	OnViewTouchedListener screenTouches = new OnViewTouchedListener() {
-		private final int MOVING_THRESHOLD = 30;
-		float x;
-		float y;
-		private boolean status_pressed = false;
-
-
-		@Override
-		public void onViewTouchOccurred(MotionEvent ev) {
-			if ((ev.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_DOWN) {
-				x = ev.getX();
-				y = ev.getY();
-				status_pressed = true;
-			}
-			if ((ev.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_MOVE) {
-				float dx = Math.abs(x - ev.getX());
-				float dy = Math.abs(y - ev.getY());
-				double dxy = Math.sqrt(dx * dx + dy * dy);
-				if (dxy >= MOVING_THRESHOLD) {
-					status_pressed = false;
-				}
-			}
-			if ((ev.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP) {
-				if (status_pressed) {
-//					click();
-					status_pressed = false;
-				}
-			}
-		}
-	};
 
 }

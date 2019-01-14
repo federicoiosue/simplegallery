@@ -17,6 +17,7 @@ package it.feio.android.simplegallery.util;
 
 import android.content.res.Resources;
 import android.graphics.*;
+import android.support.media.ExifInterface;
 import android.widget.ImageView;
 import it.feio.android.simplegallery.R;
 
@@ -24,7 +25,6 @@ import java.io.*;
 
 import android.content.Context;
 import android.graphics.Bitmap.CompressFormat;
-import android.media.ExifInterface;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -59,7 +59,7 @@ public class BitmapUtils {
 				height = (int) (srcBmp.getHeight() / ratio);
 			}
 
-			int rotation = neededRotation(new File(uri.getPath()));
+			int rotation = neededRotation(mContext, uri);
 			if (rotation != 0) {
 				Matrix matrix = new Matrix();
 				matrix.postRotate(rotation);
@@ -89,7 +89,7 @@ public class BitmapUtils {
 		if (type == TYPE_IMAGE) {
 			dstBmp = decodeSampledFromUri(mContext, uri, reqWidth, reqHeight);
 
-			int rotation = neededRotation(new File(uri.getPath()));
+			int rotation = neededRotation(mContext, uri);
 			if (rotation != 0) {
 				Matrix matrix = new Matrix();
 				matrix.postRotate(rotation);
@@ -111,10 +111,11 @@ public class BitmapUtils {
 	/**
 	 * Checks using EXIF data image's orientation
 	 */
-	public static int neededRotation(File ff) {
+	public static int neededRotation(Context mContext, Uri uri) {
 		try {
+			InputStream is = mContext.getContentResolver().openInputStream(uri);
 
-			ExifInterface exif = new ExifInterface(ff.getAbsolutePath());
+			ExifInterface exif = new ExifInterface(is);
 			int orientation = exif.getAttributeInt(
 					ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
 
